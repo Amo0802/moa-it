@@ -2,31 +2,41 @@
    TABLE OF CONTENTS
    1. Nav — mobile menu toggle
    2. Hero — phone rotation carousel
-   3. Advantages — sliding card carousel
+   3. Advantages — sliding card carousel (with drag/scroll)
    4. Showcase — tab switcher
    5. Timeline — scroll-triggered fade-in
 ══════════════════════════════════════════════════════════ */
 
 
 /* ──────────────────────────────────────────────
-   1. NAV — Mobile menu toggle
+   1. NAV — Mobile menu toggle (with hamburger animation)
 ────────────────────────────────────────────── */
 function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.querySelector('.hamburger');
+  menu.classList.toggle('open');
+  hamburger.classList.toggle('active');
+
+  // Lock/unlock body scroll
+  if (menu.classList.contains('open')) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
 }
 
 // Close mobile menu when screen is resized to desktop width
 window.addEventListener('resize', () => {
   if (window.innerWidth > 960) {
     document.getElementById('mobileMenu').classList.remove('open');
+    document.querySelector('.hamburger').classList.remove('active');
+    document.body.style.overflow = '';
   }
 });
 
 
 /* ──────────────────────────────────────────────
    2. HERO — Phone rotation
-   5 phones rotate through 5 position classes every 3s.
-   Positions: hidden-left → left → center → right → hidden-right
 ────────────────────────────────────────────── */
 (function () {
   const POSITIONS = [
@@ -38,12 +48,9 @@ window.addEventListener('resize', () => {
   ];
 
   const phones = document.querySelectorAll('.phone');
-
-  // Each phone starts at its natural index position
   let state = [0, 1, 2, 3, 4];
 
   function rotate() {
-    // Shift every phone one step forward, wrap around at the end
     state = state.map(s => (s + 1) % 5);
     phones.forEach((phone, i) => {
       phone.className = 'phone ' + POSITIONS[state[i]];
@@ -56,18 +63,17 @@ window.addEventListener('resize', () => {
 
 /* ──────────────────────────────────────────────
    3. ADVANTAGES — Sliding card carousel
-   - 3 cards visible on desktop
-   - 2 cards on tablet (≤960px)
-   - 1 card on mobile (≤600px)
-   - Auto-advances every 4s, pauses on hover
-   - Touch/swipe support
+   - 3 cards visible on desktop, 2 tablet, 1 mobile
+   - Auto-advances every 4s, pauses on hover/drag
+   - Touch swipe + mouse drag support
 ────────────────────────────────────────────── */
 (function () {
-  const track        = document.getElementById('carouselTrack');
+  const outer         = document.querySelector('.carousel-outer');
+  const track         = document.getElementById('carouselTrack');
   const dotsContainer = document.getElementById('carouselDots');
-  const cards        = Array.from(track.querySelectorAll('.adv-card'));
-  const total        = cards.length;
-  const GAP          = 20; // must match CSS gap value
+  const cards         = Array.from(track.querySelectorAll('.adv-card'));
+  const total         = cards.length;
+  const GAP           = 20;
 
   let currentIndex = 0;
   let visibleCount = getVisibleCount();
@@ -79,7 +85,6 @@ window.addEventListener('resize', () => {
     return 3;
   }
 
-  // Build dot buttons based on how many slides exist
   function buildDots() {
     dotsContainer.innerHTML = '';
     visibleCount = getVisibleCount();
@@ -101,13 +106,11 @@ window.addEventListener('resize', () => {
     const offset    = currentIndex * (cardWidth + GAP);
     track.style.transform = `translateX(-${offset}px)`;
 
-    // Update active dot
     document.querySelectorAll('.dot').forEach((d, i) => {
       d.classList.toggle('active', i === currentIndex);
     });
   }
 
-  // Rebuild dots and recalculate position on resize
   function onResize() {
     const newVisible = getVisibleCount();
     if (newVisible !== visibleCount) {
@@ -124,27 +127,104 @@ window.addEventListener('resize', () => {
     goTo(currentIndex >= maxIndex ? 0 : currentIndex + 1);
   }, 4000);
 
-  // Pause auto-advance on hover
-  track.addEventListener('mouseenter', () => clearInterval(autoInterval));
-  track.addEventListener('mouseleave', () => {
+  function pauseAuto() { clearInterval(autoInterval); }
+  function resumeAuto() {
+    clearInterval(autoInterval);
     autoInterval = setInterval(() => {
       goTo(currentIndex >= maxIndex ? 0 : currentIndex + 1);
     }, 4000);
+  }
+
+  // Pause on hover
+  outer.addEventListener('mouseenter', pauseAuto);
+  outer.addEventListener('mouseleave', resumeAuto);
+
+  // ── Mouse drag support ──
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragCurrentX = 0;
+  let trackStartOffset = 0;
+
+  function getTrackOffset() {
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    return currentIndex * (cardWidth + GAP);
+  }
+
+  outer.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragCurrentX = e.clientX;
+    trackStartOffset = getTrackOffset();
+    outer.classList.add('dragging');
+    pauseAuto();
+    e.preventDefault();
   });
 
-  // Swipe support
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-  }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) goTo(currentIndex + (diff > 0 ? 1 : -1));
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    dragCurrentX = e.clientX;
+    const diff = dragStartX - dragCurrentX;
+    const newOffset = trackStartOffset + diff;
+    track.style.transform = `translateX(-${newOffset}px)`;
   });
+
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    outer.classList.remove('dragging');
+
+    const diff = dragStartX - dragCurrentX;
+    const threshold = 50;
+
+    if (Math.abs(diff) > threshold) {
+      goTo(currentIndex + (diff > 0 ? 1 : -1));
+    } else {
+      goTo(currentIndex); // snap back
+    }
+    resumeAuto();
+  });
+
+  // ── Touch swipe support ──
+  let touchStartX = 0;
+  let touchCurrentX = 0;
+  let isTouching = false;
+
+  track.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchCurrentX = touchStartX;
+    trackStartOffset = getTrackOffset();
+    isTouching = true;
+    outer.classList.add('dragging');
+    pauseAuto();
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    if (!isTouching) return;
+    touchCurrentX = e.touches[0].clientX;
+    const diff = touchStartX - touchCurrentX;
+    const newOffset = trackStartOffset + diff;
+    track.style.transform = `translateX(-${newOffset}px)`;
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    if (!isTouching) return;
+    isTouching = false;
+    outer.classList.remove('dragging');
+
+    const diff = touchStartX - touchCurrentX;
+    if (Math.abs(diff) > 50) {
+      goTo(currentIndex + (diff > 0 ? 1 : -1));
+    } else {
+      goTo(currentIndex);
+    }
+    resumeAuto();
+  });
+
+  // Prevent link/image drag interference
+  track.addEventListener('dragstart', (e) => e.preventDefault());
 
   window.addEventListener('resize', onResize);
 
-  // Init
   buildDots();
   goTo(0);
 })();
@@ -152,7 +232,6 @@ window.addEventListener('resize', () => {
 
 /* ──────────────────────────────────────────────
    4. SHOWCASE — Tab switcher
-   Click a tab pill → swap the visible panel with a fade-in animation
 ────────────────────────────────────────────── */
 (function () {
   const tabs   = document.querySelectorAll('.showcase-tab');
@@ -164,7 +243,6 @@ window.addEventListener('resize', () => {
     panels.forEach(p => {
       if (p.dataset.panel === tabId) {
         p.classList.add('active');
-        // Two rAF frames needed: first renders display:grid, second triggers transition
         requestAnimationFrame(() => {
           requestAnimationFrame(() => p.classList.add('visible'));
         });
@@ -178,7 +256,6 @@ window.addEventListener('resize', () => {
     tab.addEventListener('click', () => activateTab(tab.dataset.tab));
   });
 
-  // Animate the first panel in on page load
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       document.querySelector('.showcase-panel.active')?.classList.add('visible');
@@ -189,8 +266,6 @@ window.addEventListener('resize', () => {
 
 /* ──────────────────────────────────────────────
    5. TIMELINE — Scroll-triggered fade-in
-   Each step fades in + slides up as it enters the viewport.
-   Steps stagger by 100ms so they animate in sequence.
 ────────────────────────────────────────────── */
 (function () {
   const items = document.querySelectorAll('.timeline-item');
@@ -199,7 +274,7 @@ window.addEventListener('resize', () => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
         setTimeout(() => entry.target.classList.add('visible'), i * 100);
-        observer.unobserve(entry.target); // only animate once
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.15 });
@@ -212,7 +287,7 @@ window.addEventListener('resize', () => {
 ────────────────────────────────────────────── */
 function openPopup() {
   document.getElementById('popupOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden'; // prevent background scroll
+  document.body.style.overflow = 'hidden';
 }
 
 function closePopup() {
@@ -220,19 +295,15 @@ function closePopup() {
   document.body.style.overflow = '';
 }
 
-// Close when clicking the dark overlay (outside the popup box)
 document.getElementById('popupOverlay').addEventListener('click', function (e) {
   if (e.target === this) closePopup();
 });
 
-// Close on Escape key
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closePopup();
 });
 
-// Attach openPopup to all CTA buttons
 document.querySelectorAll('.btn-primary').forEach(btn => {
-  // Skip pricing "Get a Quote" outlined buttons if you want them to do something different later
   btn.addEventListener('click', openPopup);
 });
 
@@ -240,6 +311,7 @@ document.querySelectorAll('.btn-primary').forEach(btn => {
 document.querySelectorAll('.mobile-menu a').forEach(link => {
   link.addEventListener('click', () => {
     document.getElementById('mobileMenu').classList.remove('open');
+    document.querySelector('.hamburger').classList.remove('active');
     document.body.style.overflow = '';
   });
 });

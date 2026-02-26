@@ -47,10 +47,8 @@ html, body {
 
 /* ──────────────────────────────────────────────
    2. GLOBAL / SHARED
-   Reusable classes used across multiple sections
 ────────────────────────────────────────────── */
 
-/* Primary button — used in nav, hero, and timeline CTA */
 .btn-primary {
   font-family: inherit;
   font-size: 0.875rem;
@@ -70,7 +68,6 @@ html, body {
   padding: 14px 32px;
 }
 
-/* Section title — shared h2 style */
 .section-title {
   font-size: clamp(2rem, 3.5vw, 3rem);
   font-weight: 800;
@@ -80,7 +77,6 @@ html, body {
   margin-bottom: 16px;
 }
 
-/* Accent tag label — e.g. "FOOD ORDERING", "DISCOVERY" */
 .tag {
   display: inline-block;
   font-size: 0.68rem;
@@ -91,7 +87,6 @@ html, body {
   margin-bottom: 10px;
 }
 
-/* Feature list — purple dot + text, used in showcase panels */
 .feature-list {
   list-style: none;
   display: flex;
@@ -106,7 +101,6 @@ html, body {
   color: rgba(255,255,255,0.85);
   line-height: 1.5;
 }
-/* Purple dot before each feature item */
 .feature-list li::before {
   content: '';
   width: 10px;
@@ -117,7 +111,6 @@ html, body {
   margin-top: 5px;
 }
 
-/* Pill tags — small rounded labels, used in timeline */
 .pills {
   display: flex;
   flex-wrap: wrap;
@@ -215,11 +208,23 @@ nav {
   height: 2px;
   background: #fff;
   border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
 }
 
-/* Full-screen mobile dropdown */
+/* Hamburger → X animation */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Full-screen mobile dropdown — animated */
 .mobile-menu {
-  display: none;
+  display: flex;
   flex-direction: column;
   position: fixed;
   top: var(--nav-h);
@@ -229,8 +234,16 @@ nav {
   padding: 24px 28px;
   gap: 4px;
   overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-12px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
-.mobile-menu.open { display: flex; }
+.mobile-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
 .mobile-menu a {
   font-size: 1rem;
   font-weight: 500;
@@ -238,13 +251,31 @@ nav {
   text-decoration: none;
   padding: 14px 0;
   border-bottom: 1px solid rgba(255,255,255,0.07);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.15s;
 }
+.mobile-menu.open a {
+  opacity: 1;
+  transform: translateY(0);
+}
+.mobile-menu.open a:nth-child(1) { transition-delay: 0.05s; }
+.mobile-menu.open a:nth-child(2) { transition-delay: 0.1s; }
+.mobile-menu.open a:nth-child(3) { transition-delay: 0.15s; }
+.mobile-menu.open a:nth-child(4) { transition-delay: 0.2s; }
 .mobile-menu a:hover { color: #fff; }
 .mobile-menu .btn-primary {
   margin-top: 16px;
   width: fit-content;
   font-size: 0.95rem;
   padding: 11px 24px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease 0.25s, transform 0.3s ease 0.25s, background 0.15s;
+}
+.mobile-menu.open .btn-primary {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
@@ -278,7 +309,6 @@ nav {
   margin-bottom: 32px;
 }
 
-/* Phone cluster — 5 phones, positioned absolutely, JS rotates classes */
 .hero-phones {
   position: relative;
   display: flex;
@@ -326,6 +356,13 @@ nav {
 
 .carousel-outer {
   overflow: hidden;
+  cursor: grab;
+}
+.carousel-outer.dragging {
+  cursor: grabbing;
+}
+.carousel-outer.dragging .carousel-track {
+  transition: none;
 }
 
 .carousel-track {
@@ -346,6 +383,7 @@ nav {
   min-height: 480px;
   border: 1px solid rgba(255,255,255,0.06);
   transition: background 0.2s;
+  user-select: none;
 }
 .adv-card:hover { background: var(--card-bg-hover); }
 
@@ -392,14 +430,13 @@ nav {
   object-fit: cover;
   border-radius: 32px;
   flex: 1;
+  pointer-events: none;
 }
 
 /* ──────────────────────────────────────────────
    6. ADVANTAGES — MOCK UI COMPONENTS
-   Visual UI mockups inside advantage cards
 ────────────────────────────────────────────── */
 
-/* Push notification mockup */
 .mock-phone-notif {
   background: #111;
   border-radius: 28px;
@@ -429,7 +466,6 @@ nav {
 .mock-notif-time { float: right; font-size: 0.65rem; color: #888; }
 .mock-notif-msg  { font-size: 0.75rem; color: #444; line-height: 1.4; }
 
-/* Loyalty points mockup */
 .mock-points-card {
   background: #fff; border-radius: 16px;
   padding: 18px 20px; color: #111;
@@ -453,7 +489,6 @@ nav {
   padding: 3px 8px; font-weight: 600;
 }
 
-/* Order management mockup */
 .mock-order-card {
   background: #fff; border-radius: 16px;
   padding: 18px 20px; color: #111;
@@ -471,7 +506,6 @@ nav {
 .mock-order-row     { display: flex; justify-content: space-between; font-size: 0.75rem; color: #555; margin-bottom: 3px; }
 .mock-order-note    { font-size: 0.68rem; color: #999; margin: 2px 0 6px 22px; line-height: 1.4; }
 
-/* Subscription mockup */
 .mock-subscription { border-radius: 16px; overflow: hidden; position: relative; }
 .mock-subscription img { width: 100%; height: 220px; object-fit: cover; display: block; }
 .mock-sub-overlay {
@@ -513,7 +547,6 @@ nav {
   border: none; border-radius: 12px; padding: 12px; cursor: pointer;
 }
 
-/* Brand / app screen mockup */
 .mock-app-screen {
   background: #fff; border-radius: 28px;
   overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.4);
@@ -565,7 +598,6 @@ nav {
   line-height: 1.7;
 }
 
-/* Tab pills */
 .showcase-tabs {
   display: flex;
   justify-content: center;
@@ -589,7 +621,6 @@ nav {
 .showcase-tab:hover  { color: #fff; border-color: rgba(255,255,255,0.2); }
 .showcase-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-/* Panels — hidden by default, shown when .active, animated when .visible */
 .showcase-panels { position: relative; }
 
 .showcase-panel {
@@ -619,7 +650,6 @@ nav {
   max-width: 420px;
 }
 
-/* Phone cluster — 3 phones side by side */
 .showcase-phones {
   position: relative;
   height: 520px;
@@ -690,7 +720,6 @@ nav {
   gap: 28px;
 }
 
-/* Middle card gets accent border and slight scale */
 .pricing-card--featured {
   border-color: var(--accent);
   box-shadow: 0 0 40px rgba(139,92,246,0.15);
@@ -739,7 +768,6 @@ nav {
   margin-top: 6px;
 }
 
-/* Outlined button variant for non-featured cards */
 .btn-outline {
   background: transparent !important;
   color: #fff !important;
@@ -757,7 +785,6 @@ nav {
   margin-top: 36px;
 }
 
-/* Responsive */
 @media (max-width: 960px) {
   .pricing { padding: 72px 24px; }
   .pricing-cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
@@ -797,7 +824,6 @@ nav {
   margin: 0 auto;
 }
 
-/* Vertical connecting line */
 .timeline::before {
   content: '';
   position: absolute;
@@ -811,7 +837,6 @@ nav {
   );
 }
 
-/* Each step — starts hidden, fades in on scroll via JS */
 .timeline-item {
   position: relative;
   padding: 0 0 52px 76px;
@@ -822,7 +847,6 @@ nav {
 .timeline-item.visible { opacity: 1; transform: translateY(0); }
 .timeline-item:last-child { padding-bottom: 0; }
 
-/* Numbered circle */
 .timeline-bubble {
   position: absolute;
   left: 0; top: 2px;
@@ -837,7 +861,6 @@ nav {
   z-index: 1;
 }
 
-/* Highlighted step (Design) gets a glowing filled bubble */
 .timeline-item.highlight .timeline-bubble {
   background: var(--accent);
   color: #000;
@@ -859,7 +882,6 @@ nav {
   max-width: 580px;
 }
 
-/* CTA at the bottom of the timeline */
 .timeline-cta {
   padding-left: 76px;
   margin-top: 52px;
@@ -878,12 +900,10 @@ nav {
 ────────────────────────────────────────────── */
 @media (max-width: 960px) {
 
-  /* Nav */
   nav { padding: 0 24px; }
   .nav-links, .nav-right { display: none; }
   .hamburger { display: flex; }
 
-  /* Hero */
   .hero {
     grid-template-columns: 1fr;
     padding: 48px 24px 60px;
@@ -894,11 +914,9 @@ nav {
   .hero-sub { margin: 0 auto 32px; }
   .hero-phones { height: 420px; margin-top: 40px; }
 
-  /* Advantages */
   .advantages { padding: 72px 24px; }
   .adv-card { flex: 0 0 calc((100% - 20px) / 2); min-height: 440px; }
 
-  /* Showcase */
   .showcase { padding: 72px 24px; }
   .showcase-tabs { margin-bottom: 28px; }
   .showcase-panel {
@@ -913,7 +931,6 @@ nav {
   .sc-phone.sc-left   { width: 160px; height: 345px; transform: translateX(-165%); }
   .sc-phone.sc-right  { width: 160px; height: 345px; transform: translateX(65%); }
 
-  /* Process */
   .process { padding: 72px 24px; }
 }
 
@@ -923,10 +940,8 @@ nav {
 ────────────────────────────────────────────── */
 @media (max-width: 600px) {
 
-  /* Advantages — 1 card per view */
   .adv-card { flex: 0 0 100%; min-height: 450px; }
 
-  /* Showcase */
   .showcase { padding: 56px 20px; }
   .showcase-tab { font-size: 0.78rem; padding: 8px 16px; }
   .showcase-phones { height: 340px; }
@@ -942,15 +957,12 @@ nav {
 ────────────────────────────────────────────── */
 @media (max-width: 520px) {
 
-  /* Hero */
   .hero-text { padding-bottom: 80px; }
   .hero-phones { height: 340px; }
 
-  /* Advantages */
   .advantages { padding: 56px 20px; }
   .adv-card { min-height: 400px; }
 
-  /* Process */
   .process { padding: 56px 20px; }
   .timeline::before { left: 22px; }
   .timeline-item { padding-left: 60px; padding-bottom: 40px; }
