@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoaIT — Native Mobile App Builder</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-inner">
+
+      <a class="logo" href="#">
+        <span class="logo-name">Moa<span class="logo-it">IT</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#apps">Types of Apps</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#process">Process</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <button class="btn-primary">Let's Talk</button>
+      </div>
+
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- Mobile dropdown menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#apps">Types of Apps</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#process">Process</a>
+    <button class="btn-primary">Let's Talk</button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════ -->
+  <section class="hero" id="home">
+
+    <div class="hero-text">
+      <h1 class="hero-h1">
+        Mobile Apps <br>
+        Built for <br>
+        <span class="accent">Business Growth</span>
+      </h1>
+      <p class="hero-sub">
+        We design and build native iOS & Android apps. <br>Fast, affordable, and tailored to your business.
+      </p>
+      <button class="btn-primary btn-large">Start Your Project</button>
+    </div>
+
+    <!-- Rotating phone carousel — images swapped every 3s via JS -->
+    <div class="hero-phones">
+      <div class="phone pos-hidden-left">
+        <img src="gym home 2.png" alt="Gym app screenshot" />
+      </div>
+      <div class="phone pos-left">
+        <img src="clothes home.png" alt="Clothes app screenshot" />
+      </div>
+      <div class="phone pos-center">
+        <img src="Group 2.png" alt="App screenshot" />
+      </div>
+      <div class="phone pos-right">
+        <img src="Group 3.png" alt="App screenshot" />
+      </div>
+      <div class="phone pos-hidden-right">
+        <img src="Group 4.png" alt="App screenshot" />
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       ADVANTAGES
+       Sliding carousel — 3 cards desktop, 2 tablet, 1 mobile
+  ══════════════════════════════════════════════ -->
+  <section class="advantages" id="advantages">
+    <h2 class="section-title">What a mobile app can do for your business</h2>
+
+    <div class="carousel-outer">
+      <div class="carousel-track" id="carouselTrack">
+
+        <!-- Card 1 — Push notifications -->
+        <div class="adv-card">
+          <div class="adv-card-text">
+            <h3>Always in your customer's pocket</h3>
+            <p>Your customers check their phones dozens of times a day. A native app puts your business right there with them, instantly and always accessible.</p>
+          </div>
+          <div class="adv-card-visual">
+            <img src="iph.png" alt="description" class="adv-card-img" style="max-height: 440px;"/>
+          </div>
+        </div>
+
+        <!-- Card 2 — Loyalty points -->
+        <div class="adv-card">
+          <div class="adv-card-text">
+            <h3>Keep customers coming back</h3>
+            <p>Loyalty programs, push notifications, and personalized offers help transform first-time buyers into loyal customers who return again and again.</p>
+          </div>
+          <div class="adv-card-visual">
+            <img src="brth.png" alt="description" class="adv-card-img" style="max-height: 320px;" />
+          </div>
+        </div>
+
+        <!-- Card 3 — Order management -->
+        <div class="adv-card">
+          <div class="adv-card-text">
+            <h3>Run your business smarter</h3>
+            <p>Orders, bookings, and payments all in one place. Less manual work, fewer mistakes, and more time to focus on what truly matters.</p>
+          </div>
+          <div class="adv-card-visual">
+            <img src="orders1.png" alt="description" class="adv-card-img"  />
+          </div>
+        </div>
+
+        <!-- Card 4 — Subscriptions -->
+        <div class="adv-card">
+          <div class="adv-card-text">
+            <h3>Sell more, directly from the app</h3>
+            <p>In-app purchases, subscriptions, and mobile commerce convert better than websites because mobile is where your customers already spend their time.</p>
+          </div>
+          <div class="adv-card-visual">
+            <img src="nzm.png" alt="description" class="adv-card-img" style="max-height: 400px;"/>
+          </div>
+        </div>
+
+        <!-- Card 5 — Brand presence / app screen -->
+        <div class="adv-card">
+          <div class="adv-card-text">
+            <h3>Your brand, on their home screen</h3>
+            <p>A polished, branded app signals professionalism and builds trust. Every time they see your icon, your business stays top of mind.</p>
+          </div>
+          <div class="adv-card-visual">
+            <img src="Group 11.png" alt="description" class="adv-card-img" />
+          </div>
+        </div>
+
+      </div><!-- /carousel-track -->
+    </div><!-- /carousel-outer -->
+
+    <div class="carousel-dots" id="carouselDots"></div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       APP SHOWCASE
+       Tab switcher — click tab to swap content & phones
+  ══════════════════════════════════════════════ -->
+  <section class="showcase" id="apps">
+
+    <div class="showcase-header">
+      <h2 class="section-title">Apps built for every business</h2>
+      <p>From restaurants to gyms, we've shipped native apps across industries — each one tailored to the way that business actually works.</p>
+    </div>
+
+    <!-- Tab pills -->
+    <div class="showcase-tabs">
+      <button class="showcase-tab active" data-tab="food">Food Ordering</button>
+      <button class="showcase-tab" data-tab="loyalty">Loyalty</button>
+      <button class="showcase-tab" data-tab="ecom">E-Commerce</button>
+      <button class="showcase-tab" data-tab="school">School</button>
+      <button class="showcase-tab" data-tab="gym">Gym</button>
+    </div>
+
+    <div class="showcase-panels">
+
+      <!-- Food Ordering -->
+      <div class="showcase-panel active" data-panel="food">
+        <div class="showcase-text">
+          <span class="tag">Food Ordering</span>
+          <h3>Order ahead, skip the queue</h3>
+          <p>Give your customers a seamless way to browse your menu, customize their order, and pay — all from their phone. Reduce wait times and increase average order value.</p>
+          <ul class="feature-list">
+            <li>Full menu management with categories and modifiers</li>
+            <li>In-app payments with Apple Pay &amp; Google Pay</li>
+            <li>Real-time order status notifications</li>
+            <li>Pickup scheduling and table ordering</li>
+          </ul>
+        </div>
+        <div class="showcase-phones">
+          <div class="sc-phone sc-left"><img src="Group 5.png" alt="" /></div>
+          <div class="sc-phone sc-center"><img src="Group 2.png" alt="" /></div>
+          <div class="sc-phone sc-right"><img src="Group 10.png" alt="" /></div>
+        </div>
+      </div>
+
+      <!-- Loyalty -->
+      <div class="showcase-panel" data-panel="loyalty">
+        <div class="showcase-text">
+          <span class="tag">Loyalty</span>
+          <h3>Turn first-timers into regulars</h3>
+          <p>Reward customers for every visit and purchase. A points-based loyalty system keeps them engaged and coming back — with offers that feel personal, not generic.</p>
+          <ul class="feature-list">
+            <li>Points system with custom earning rules</li>
+            <li>Redeemable rewards — free items, discounts, perks</li>
+            <li>Push notifications for promotions and milestones</li>
+            <li>Customer insights dashboard for you</li>
+          </ul>
+        </div>
+        <div class="showcase-phones">
+          <div class="sc-phone sc-left"><img src="Group 8.png" alt="" /></div>
+          <div class="sc-phone sc-center"><img src="Group 4.png" alt="" /></div>
+          <div class="sc-phone sc-right"><img src="Group 6.png" alt="" /></div>
+        </div>
+      </div>
+
+      <!-- E-Commerce -->
+      <div class="showcase-panel" data-panel="ecom">
+        <div class="showcase-text">
+          <span class="tag">E-Commerce</span>
+          <h3>Your store, in their pocket</h3>
+          <p>A fully native shopping experience that outperforms any mobile website. From product discovery to checkout, every step is optimized for conversion on mobile.</p>
+          <ul class="feature-list">
+            <li>Product catalog with search, filters, and collections</li>
+            <li>Secure checkout with saved payment methods</li>
+            <li>Order tracking from dispatch to delivery</li>
+            <li>Wishlists, reviews, and personalized recommendations</li>
+          </ul>
+        </div>
+        <div class="showcase-phones">
+          <div class="sc-phone sc-left"><img src="clothes category.png" alt="" /></div>
+          <div class="sc-phone sc-center"><img src="clothes home.png" alt="" /></div>
+          <div class="sc-phone sc-right"><img src="clothes one product.png" alt="" /></div>
+        </div>
+      </div>
+
+      <!-- School -->
+      <div class="showcase-panel" data-panel="school">
+        <div class="showcase-text">
+          <span class="tag">School</span>
+          <h3>Keeping students, parents and staff connected</h3>
+          <p>One app for your entire school community. Announcements, schedules, grades, and direct messaging — everything in one place, accessible anytime.</p>
+          <ul class="feature-list">
+            <li>Class schedules, events, and timetables</li>
+            <li>Direct messaging between parents, students, and staff</li>
+            <li>Grades, assignments, and attendance tracking</li>
+            <li>Push announcements for the whole school or specific classes</li>
+          </ul>
+        </div>
+        <div class="showcase-phones">
+          <div class="sc-phone sc-left"><img src="Group 7.png" alt="" /></div>
+          <div class="sc-phone sc-center"><img src="Group 3.png" alt="" /></div>
+          <div class="sc-phone sc-right"><img src="Group 9.png" alt="" /></div>
+        </div>
+      </div>
+
+      <!-- Gym -->
+      <div class="showcase-panel" data-panel="gym">
+        <div class="showcase-text">
+          <span class="tag">Gym</span>
+          <h3>Every member's personal fitness hub</h3>
+          <p>Give your gym members a premium experience beyond the gym floor. Class bookings, workout plans, progress tracking and membership management — all in one branded app.</p>
+          <ul class="feature-list">
+            <li>Digital membership card with QR code access</li>
+            <li>Personal progress tracking and workout logs</li>
+            <li>Membership plans and in-app subscription payments</li>
+            <li>Class scheduling and one-tap booking</li>
+          </ul>
+        </div>
+        <div class="showcase-phones">
+          <div class="sc-phone sc-left"><img src="gym welcome.png" alt="" /></div>
+          <div class="sc-phone sc-center"><img src="gym home 2.png" alt="" /></div>
+          <div class="sc-phone sc-right"><img src="gym 2.png" alt="" /></div>
+        </div>
+      </div>
+
+    </div><!-- /showcase-panels -->
+          <p><br>Don't see your industry? <br><span style="color:var(--accent)">We build fully custom apps too.</span></p>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+     PRICING
+══════════════════════════════════════════════ -->
+<section class="pricing" id="pricing">
+
+  <div class="pricing-header">
+    <h2 class="section-title">Simple, transparent pricing</h2>
+    <p>Fixed prices, no hidden fees. 50% to begin, 50% on delivery.</p>
+  </div>
+
+  <div class="pricing-cards">
+
+    <div class="pricing-card">
+      <div class="pricing-card-top">
+        <span class="tag">Starter</span>
+        <div class="pricing-price">From <strong>$2,000</strong></div>
+        <p class="pricing-desc">Perfect for straightforward apps — loyalty programs, basic food ordering, or simple service bookings.</p>
+      </div>
+      <ul class="pricing-features">
+        <li>iOS &amp; Android app</li>
+        <li>Up to 5 core features</li>
+        <li>2 rounds of design revisions</li>
+        <li>App Store &amp; Google Play submission</li>
+        <li>30-day delivery</li>
+        <li>24/7 support during development</li>
+      </ul>
+      <button class="btn-primary btn-large btn-outline">Get a Quote</button>
+    </div>
+
+    <div class="pricing-card pricing-card--featured">
+      <div class="pricing-card-top">
+        <span class="tag">Business</span>
+        <div class="pricing-price">From <strong>$5,000</strong></div>
+        <p class="pricing-desc">For more complex apps — e-commerce, gym management, school platforms, or multi-feature builds.</p>
+      </div>
+      <ul class="pricing-features">
+        <li>Everything in Starter</li>
+        <li>Unlimited features</li>
+        <li>Custom design system</li>
+        <li>Third-party integrations</li>
+        <li>In-app payments</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="btn-primary btn-large">Get a Quote</button>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-card-top">
+        <span class="tag">Custom</span>
+        <div class="pricing-price"><strong>Let's talk</strong></div>
+        <p class="pricing-desc">Have a unique idea that doesn't fit a template? We'll scope it together and give you a fixed quote.</p>
+      </div>
+      <ul class="pricing-features">
+        <li>Everything in Business</li>
+        <li>Fully custom architecture</li>
+        <li>NDA before first call</li>
+        <li>Dedicated project manager</li>
+        <li>Custom timeline</li>
+        <li>Monthly hosting &amp; maintenance</li>
+      </ul>
+      <button class="btn-primary btn-large btn-outline">Book a Call</button>
+    </div>
+
+  </div>
+
+  <p class="pricing-note">All plans include monthly hosting &amp; maintenance — priced separately based on your app's needs.</p>
+
+</section>
+
+
+  <!-- ══════════════════════════════════════════════
+       PROCESS TIMELINE
+       Steps fade in on scroll via IntersectionObserver
+  ══════════════════════════════════════════════ -->
+  <section class="process" id="process">
+
+    <div class="process-header">
+      <h2 class="section-title">From first call to<br>app store — here's how it works</h2>
+      <p>A clear, transparent process so you always know what's happening and what comes next.</p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-bubble">01</div>
+        <div class="timeline-content">
+          <span class="tag">Discovery</span>
+          <h3>We get to know your vision</h3>
+          <p>Reach out and we'll schedule a consultation — via video call, phone, or messages, whatever suits you best. We'll discuss your app idea, target audience, required features, and overall goals. Before any details are shared, we sign an NDA to keep your idea fully protected.</p>
+          <div class="pills">
+            <span class="pill">Video call</span>
+            <span class="pill">Phone call</span>
+            <span class="pill">Messages</span>
+            <span class="pill">NDA signed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-bubble">02</div>
+        <div class="timeline-content">
+          <span class="tag">Proposal</span>
+          <h3>Transparent pricing, no surprises</h3>
+          <p>Once we have a clear picture of your requirements, we put together a detailed proposal — scope, timeline, and a fixed price. We work to find a number that makes sense for both sides. A 50% deposit is required to begin, with the remaining 50% due on delivery.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item highlight">
+        <div class="timeline-bubble">03</div>
+        <div class="timeline-content">
+          <span class="tag">Design</span>
+          <h3>Your app takes shape in days</h3>
+          <p>Once we're aligned on the proposal, our design team gets to work. Within a few days you'll receive a full mockup of your app — every screen, every interaction. You get <strong>two rounds of revisions</strong> to make sure everything looks and feels exactly right before we write a single line of code.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-bubble">04</div>
+        <div class="timeline-content">
+          <span class="tag">Contract &amp; Kickoff</span>
+          <h3>We sign, then we build</h3>
+          <p>Happy with the design? We sign the contract and development begins. You'll have access to a live progress tracker so you can follow along at every stage — no radio silence, no guessing where things stand.</p>
+          <div class="pills">
+            <span class="pill">Signed contract</span>
+            <span class="pill">Live progress tracker</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-bubble">05</div>
+        <div class="timeline-content">
+          <span class="tag">Launch</span>
+          <h3>Live on App Store &amp; Google Play in under a month</h3>
+          <p>Most apps are fully built, tested, and submitted to both the Apple App Store and Google Play Store in less than 30 days from contract signing. More complex projects take a little longer — we'll set a realistic timeline upfront so you're never left waiting without an explanation.</p>
+          <div class="pills">
+            <span class="pill">App Store</span>
+            <span class="pill">Google Play</span>
+            <span class="pill">Under 30 days</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-bubble">06</div>
+        <div class="timeline-content">
+          <span class="tag">Ongoing Support</span>
+          <h3>We don't disappear after launch</h3>
+          <p>Your app is live — but our work doesn't stop there. We offer 24/7 customer support throughout development and after launch. Our monthly hosting &amp; maintenance plan keeps your app updated, secure, and running smoothly so you can focus on your business.</p>
+          <div class="pills">
+            <span class="pill">24/7 support</span>
+            <span class="pill">Monthly maintenance</span>
+            <span class="pill">Hosting included</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA at the bottom of the timeline -->
+      <div class="timeline-cta">
+        <button class="btn-primary btn-large">Start Your Project</button>
+        <p>Free consultation · No commitment</p>
+      </div>
+
+    </div><!-- /timeline -->
+
+  </section>
+
+  <!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 MoaIT. All rights reserved.</p>
+    <a href="mailto:hello@moa-it.me">hello@moa-it.me</a>
+  </div>
+</footer>
+
+  <!-- ══════════════════════════════════════════════
+     CONTACT POPUP
+══════════════════════════════════════════════ -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup">
+
+    <button class="popup-close" onclick="closePopup()" aria-label="Close">✕</button>
+
+    <span class="tag">Free Consultation</span>
+    <h2>Let's build your app</h2>
+    <p>Fill in your details and we'll get back to you within 24 hours.</p>
+
+    <div class="popup-form">
+      <div class="popup-row">
+        <div class="popup-field">
+          <label>Your name</label>
+          <input type="text" placeholder="John Smith" />
+        </div>
+        <div class="popup-field">
+          <label>Email</label>
+          <input type="email" placeholder="john@company.com" />
+        </div>
+      </div>
+      <div class="popup-field">
+        <label>Phone <span>(optional)</span></label>
+        <input type="tel" placeholder="+1 234 567 890" />
+      </div>
+      <div class="popup-field">
+        <label>Tell us about your app idea</label>
+        <textarea placeholder="What kind of app do you need? Any features in mind?" rows="4"></textarea>
+      </div>
+      <button class="btn-primary btn-large popup-submit">Send Message</button>
+      <p class="popup-note">No commitment · We'll reply within 24h</p>
+    </div>
+
+  </div>
+</div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
