@@ -62,6 +62,29 @@ window.addEventListener('resize', () => {
 
 
 /* ──────────────────────────────────────────────
+   2b. HERO — Image load shimmer
+   Fade in each phone image once it's loaded
+────────────────────────────────────────────── */
+(function () {
+  document.querySelectorAll('.phone').forEach(phone => {
+    const img = phone.querySelector('img');
+    if (!img) return;
+
+    function markLoaded() {
+      phone.classList.add('loaded');
+    }
+
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
+    } else {
+      img.addEventListener('load', markLoaded);
+      img.addEventListener('error', markLoaded); // remove shimmer even on error
+    }
+  });
+})();
+
+
+/* ──────────────────────────────────────────────
    3. ADVANTAGES — Sliding card carousel
    - 3 cards visible on desktop, 2 tablet, 1 mobile
    - Auto-advances every 4s, pauses on hover/drag
