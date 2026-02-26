@@ -210,29 +210,51 @@ window.addEventListener('resize', () => {
 
   // ── Touch swipe support ──
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchCurrentX = 0;
   let isTouching = false;
+  let touchDirection = null; // 'horizontal' | 'vertical' | null
 
-  track.addEventListener('touchstart', (e) => {
+  outer.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
     touchCurrentX = touchStartX;
     trackStartOffset = getTrackOffset();
     isTouching = true;
+    touchDirection = null;
     outer.classList.add('dragging');
     pauseAuto();
   }, { passive: true });
 
-  track.addEventListener('touchmove', (e) => {
+  outer.addEventListener('touchmove', (e) => {
     if (!isTouching) return;
+
+    const dx = e.touches[0].clientX - touchStartX;
+    const dy = e.touches[0].clientY - touchStartY;
+
+    // Decide direction on first significant movement
+    if (!touchDirection) {
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        touchDirection = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
+      }
+      return;
+    }
+
+    // Let the browser handle vertical scrolls normally
+    if (touchDirection === 'vertical') return;
+
+    // Horizontal swipe — prevent page scroll and move carousel
+    e.preventDefault();
     touchCurrentX = e.touches[0].clientX;
     const diff = touchStartX - touchCurrentX;
     const newOffset = trackStartOffset + diff;
     track.style.transform = `translateX(-${newOffset}px)`;
-  }, { passive: true });
+  }, { passive: false });
 
-  track.addEventListener('touchend', () => {
+  outer.addEventListener('touchend', () => {
     if (!isTouching) return;
     isTouching = false;
+    touchDirection = null;
     outer.classList.remove('dragging');
 
     const diff = touchStartX - touchCurrentX;
