@@ -53,7 +53,8 @@ window.addEventListener('resize', () => {
   function rotate() {
     state = state.map(s => (s + 1) % 5);
     phones.forEach((phone, i) => {
-      phone.className = 'phone ' + POSITIONS[state[i]];
+      const loaded = phone.classList.contains('loaded') ? ' loaded' : '';
+      phone.className = 'phone ' + POSITIONS[state[i]] + loaded;
     });
   }
 
