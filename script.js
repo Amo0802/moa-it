@@ -164,41 +164,6 @@ window.addEventListener('resize', () => {
   outer.addEventListener('mouseenter', pauseAuto);
   outer.addEventListener('mouseleave', resumeAuto);
 
-  // ── Trackpad / mouse wheel scroll support ──
-  let wheelAccumulator = 0;
-  const WHEEL_THRESHOLD = 60;
-  let wheelTimeout = null;
-
-  outer.addEventListener('wheel', (e) => {
-    // Use deltaX for horizontal scroll, fall back to deltaY for vertical scroll gestures
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-
-    // Only prevent default if there's meaningful horizontal intent or we're handling it
-    if (Math.abs(delta) > 2) {
-      e.preventDefault();
-    }
-
-    pauseAuto();
-
-    wheelAccumulator += delta;
-
-    // Clear accumulator after inactivity (gesture ended)
-    clearTimeout(wheelTimeout);
-    wheelTimeout = setTimeout(() => {
-      wheelAccumulator = 0;
-      resumeAuto();
-    }, 200);
-
-    if (Math.abs(wheelAccumulator) >= WHEEL_THRESHOLD) {
-      if (wheelAccumulator > 0) {
-        goTo(currentIndex + 1);
-      } else {
-        goTo(currentIndex - 1);
-      }
-      wheelAccumulator = 0;
-    }
-  }, { passive: false });
-
   // ── Mouse drag support ──
   let isDragging = false;
   let dragStartX = 0;
