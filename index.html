@@ -14,6 +14,7 @@
     rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -539,21 +540,33 @@
         <div class="popup-row">
           <div class="popup-field">
             <label>Your name</label>
-            <input type="text" name="full_name" placeholder="John Smith" />
+            <input type="text" name="full_name" placeholder="John Smith" maxlength="100" />
           </div>
           <div class="popup-field">
             <label>Email</label>
-            <input type="email" name="email" placeholder="john@company.com" />
+            <input type="email" name="email" placeholder="john@company.com" maxlength="150" />
           </div>
         </div>
         <div class="popup-field">
           <label>Phone <span>(optional)</span></label>
-          <input type="tel" name="phone" placeholder="+1 234 567 890" />
+          <input type="tel" name="phone" placeholder="+1 234 567 890" maxlength="30" />
         </div>
         <div class="popup-field">
           <label>Tell us about your app idea</label>
-          <textarea name="message" placeholder="What kind of app do you need? Any features in mind?" rows="4"></textarea>
+          <textarea name="message" placeholder="What kind of app do you need? Any features in mind?" rows="4"
+            maxlength="2000"></textarea>
         </div>
+
+        <!-- Honeypot — invisible to users, traps bots -->
+        <div class="popup-field" style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+          <input type="text" name="website_url" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <!-- Cloudflare Turnstile CAPTCHA -->
+        <div class="popup-turnstile">
+          <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="dark"></div>
+        </div>
+
         <button class="btn-primary btn-large popup-submit">Send Message</button>
         <p class="popup-note">No commitment · We'll reply within 24h</p>
       </div>
